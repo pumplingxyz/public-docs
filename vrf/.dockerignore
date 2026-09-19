@@ -1,0 +1,10 @@
+.git
+.github
+.gitignore
+.DS_Store
+__pycache__
+*.pyc
+README.md
+idl
+vrf/README.md
+vrf/.dockerignore

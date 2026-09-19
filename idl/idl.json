@@ -1,0 +1,1424 @@
+{
+  "address": "4mk8SH9un549ETZatKRkths44e2RBRkFGBmTvFie2oeH",
+  "metadata": {
+    "name": "lottery",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Created with Anchor"
+  },
+  "instructions": [
+    {
+      "name": "close_lottery",
+      "discriminator": [
+        253,
+        97,
+        216,
+        187,
+        251,
+        189,
+        113,
+        22
+      ],
+      "accounts": [
+        {
+          "name": "lottery",
+          "writable": true
+        },
+        {
+          "name": "vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "lottery"
+              }
+            ]
+          }
+        },
+        {
+          "name": "admin",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "lottery"
+          ]
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "deposit_sol",
+      "discriminator": [
+        108,
+        81,
+        78,
+        117,
+        125,
+        155,
+        56,
+        200
+      ],
+      "accounts": [
+        {
+          "name": "lottery",
+          "writable": true
+        },
+        {
+          "name": "vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "lottery"
+              }
+            ]
+          }
+        },
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "mint",
+          "docs": [
+            "We only verify that this account's key matches the mint_pubkey argument.",
+            "No account data is accessed, so this is safe."
+          ]
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "mint_arg",
+          "type": "pubkey"
+        },
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "emergency_fulfill_randomness",
+      "docs": [
+        "The way out if ORAO itself stops answering.",
+        "",
+        "It cannot be used to dislike a result. The program reads the request",
+        "account and refuses the moment randomness is there, so the only state",
+        "this instruction accepts is one an outsider can check: the wait has gone",
+        "by and the request is still empty."
+      ],
+      "discriminator": [
+        44,
+        138,
+        40,
+        131,
+        40,
+        5,
+        22,
+        56
+      ],
+      "accounts": [
+        {
+          "name": "lottery",
+          "writable": true
+        },
+        {
+          "name": "admin",
+          "signer": true,
+          "relations": [
+            "lottery"
+          ]
+        },
+        {
+          "name": "vrf_request",
+          "docs": [
+            "The request must be produced for inspection: the handler refuses once",
+            "ORAO has answered, and it cannot tell without reading it.",
+            ""
+          ]
+        }
+      ],
+      "args": [
+        {
+          "name": "seed",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "fulfill_randomness",
+      "docs": [
+        "Takes the randomness ORAO produced for this round and writes it in.",
+        "",
+        "Permissionless on purpose: the result is already fixed by the time this",
+        "runs, so anybody may push the round forward and nobody has to wait for",
+        "us to do it."
+      ],
+      "discriminator": [
+        235,
+        105,
+        140,
+        46,
+        40,
+        88,
+        117,
+        2
+      ],
+      "accounts": [
+        {
+          "name": "lottery",
+          "writable": true
+        },
+        {
+          "name": "vrf_request"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "initialize",
+      "discriminator": [
+        175,
+        175,
+        109,
+        31,
+        13,
+        152,
+        155,
+        237
+      ],
+      "accounts": [
+        {
+          "name": "lottery",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  111,
+                  116,
+                  116,
+                  101,
+                  114,
+                  121
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "admin"
+              },
+              {
+                "kind": "arg",
+                "path": "lottery_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "lottery"
+              }
+            ]
+          }
+        },
+        {
+          "name": "wallet_fee",
+          "docs": [
+            "Commission wallet"
+          ],
+          "writable": true
+        },
+        {
+          "name": "wallet_keeper",
+          "docs": [
+            "Keeper wallet (for off-chain purchases & distributions)"
+          ],
+          "writable": true
+        },
+        {
+          "name": "admin",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "_lottery_id",
+          "type": "u64"
+        },
+        {
+          "name": "start_ts",
+          "type": "i64"
+        },
+        {
+          "name": "end_ts",
+          "type": "i64"
+        },
+        {
+          "name": "fee_bps",
+          "type": "u16"
+        },
+        {
+          "name": "min_amount",
+          "type": {
+            "option": "u64"
+          }
+        },
+        {
+          "name": "max_amount",
+          "type": {
+            "option": "u64"
+          }
+        },
+        {
+          "name": "max_total",
+          "type": "u64"
+        },
+        {
+          "name": "vrf_algorithm_hash",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "pause",
+      "discriminator": [
+        211,
+        22,
+        221,
+        251,
+        74,
+        121,
+        193,
+        47
+      ],
+      "accounts": [
+        {
+          "name": "lottery",
+          "writable": true
+        },
+        {
+          "name": "admin",
+          "signer": true,
+          "relations": [
+            "lottery"
+          ]
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "start_purchases_phase",
+      "discriminator": [
+        123,
+        116,
+        106,
+        111,
+        95,
+        73,
+        184,
+        151
+      ],
+      "accounts": [
+        {
+          "name": "lottery",
+          "writable": true
+        },
+        {
+          "name": "vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "lottery"
+              }
+            ]
+          }
+        },
+        {
+          "name": "wallet_fee",
+          "writable": true
+        },
+        {
+          "name": "wallet_keeper",
+          "writable": true
+        },
+        {
+          "name": "admin",
+          "signer": true,
+          "relations": [
+            "lottery"
+          ]
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "start_second_phase",
+      "discriminator": [
+        217,
+        238,
+        55,
+        14,
+        7,
+        102,
+        160,
+        195
+      ],
+      "accounts": [
+        {
+          "name": "lottery",
+          "writable": true
+        },
+        {
+          "name": "admin",
+          "docs": [
+            "Pays the ORAO fee and the request account's rent, and is the `client`",
+            "ORAO records, so the rent that comes back on fulfilment comes back here."
+          ],
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "lottery"
+          ]
+        },
+        {
+          "name": "vrf_request",
+          "docs": [
+            "The request account ORAO will create.",
+            "",
+            "Its address is a PDA of the seed the handler derives, and the handler",
+            "checks it against that derivation before the CPI. The check lives there",
+            "rather than in a seeds constraint because the seed depends on a sysvar",
+            "read, and a constraint that cannot fail cleanly is worse than an",
+            "explicit one that can.",
+            ""
+          ],
+          "writable": true
+        },
+        {
+          "name": "vrf_network_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  111,
+                  114,
+                  97,
+                  111,
+                  45,
+                  118,
+                  114,
+                  102,
+                  45,
+                  110,
+                  101,
+                  116,
+                  119,
+                  111,
+                  114,
+                  107,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103,
+                  117,
+                  114,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                7,
+                71,
+                177,
+                26,
+                250,
+                145,
+                180,
+                209,
+                249,
+                34,
+                242,
+                123,
+                14,
+                186,
+                193,
+                218,
+                178,
+                59,
+                33,
+                41,
+                164,
+                190,
+                243,
+                79,
+                50,
+                164,
+                123,
+                88,
+                245,
+                206,
+                252,
+                120
+              ]
+            }
+          }
+        },
+        {
+          "name": "vrf_treasury",
+          "writable": true
+        },
+        {
+          "name": "vrf_program",
+          "address": "VRFzZoJdhFWL8rkvu87LpKM3RbcVezpMEc6X5GVDr7y"
+        },
+        {
+          "name": "recent_slothashes",
+          "address": "SysvarS1otHashes111111111111111111111111111"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "weights_hash",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "seed_slot",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "unpause",
+      "discriminator": [
+        169,
+        144,
+        4,
+        38,
+        10,
+        141,
+        188,
+        255
+      ],
+      "accounts": [
+        {
+          "name": "lottery",
+          "writable": true
+        },
+        {
+          "name": "admin",
+          "signer": true,
+          "relations": [
+            "lottery"
+          ]
+        }
+      ],
+      "args": []
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Lottery",
+      "discriminator": [
+        162,
+        182,
+        26,
+        12,
+        164,
+        214,
+        112,
+        3
+      ]
+    },
+    {
+      "name": "NetworkState",
+      "discriminator": [
+        212,
+        237,
+        148,
+        56,
+        97,
+        245,
+        51,
+        169
+      ]
+    }
+  ],
+  "events": [
+    {
+      "name": "Deposit",
+      "discriminator": [
+        62,
+        205,
+        242,
+        175,
+        244,
+        169,
+        136,
+        52
+      ]
+    },
+    {
+      "name": "EmergencySeedUsed",
+      "discriminator": [
+        11,
+        16,
+        187,
+        249,
+        175,
+        206,
+        146,
+        125
+      ]
+    },
+    {
+      "name": "LotteryInitialized",
+      "discriminator": [
+        198,
+        188,
+        153,
+        94,
+        232,
+        47,
+        124,
+        219
+      ]
+    },
+    {
+      "name": "PauseStatusChanged",
+      "discriminator": [
+        79,
+        144,
+        205,
+        195,
+        9,
+        152,
+        146,
+        91
+      ]
+    },
+    {
+      "name": "Phase2Started",
+      "discriminator": [
+        150,
+        213,
+        12,
+        65,
+        83,
+        172,
+        2,
+        51
+      ]
+    },
+    {
+      "name": "PhaseChanged",
+      "discriminator": [
+        178,
+        201,
+        67,
+        222,
+        208,
+        36,
+        213,
+        219
+      ]
+    },
+    {
+      "name": "PurchasesPhaseStarted",
+      "discriminator": [
+        155,
+        58,
+        73,
+        228,
+        94,
+        213,
+        112,
+        242
+      ]
+    },
+    {
+      "name": "VrfFulfilled",
+      "discriminator": [
+        133,
+        214,
+        117,
+        50,
+        159,
+        239,
+        83,
+        72
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "InvalidTimeRange",
+      "msg": "Invalid time range"
+    },
+    {
+      "code": 6001,
+      "name": "WalletsMustBeDifferent",
+      "msg": "Fee wallet and keeper wallet must be different"
+    },
+    {
+      "code": 6002,
+      "name": "FeeTooHigh",
+      "msg": "Fee is too high"
+    },
+    {
+      "code": 6003,
+      "name": "InvalidAmountBounds",
+      "msg": "Invalid min/max amount bounds"
+    },
+    {
+      "code": 6004,
+      "name": "InvalidTotalLimit",
+      "msg": "Invalid total limit"
+    },
+    {
+      "code": 6005,
+      "name": "Paused",
+      "msg": "Lottery is paused"
+    },
+    {
+      "code": 6006,
+      "name": "NotOpen",
+      "msg": "Lottery is not open"
+    },
+    {
+      "code": 6007,
+      "name": "NotStarted",
+      "msg": "Lottery not started yet"
+    },
+    {
+      "code": 6008,
+      "name": "Ended",
+      "msg": "Lottery ended"
+    },
+    {
+      "code": 6009,
+      "name": "InvalidAmount",
+      "msg": "Invalid amount"
+    },
+    {
+      "code": 6010,
+      "name": "TotalLimitExceeded",
+      "msg": "Total limit exceeded"
+    },
+    {
+      "code": 6011,
+      "name": "Overflow",
+      "msg": "Overflow"
+    },
+    {
+      "code": 6012,
+      "name": "MintKeyMismatch",
+      "msg": "Mint key mismatch"
+    },
+    {
+      "code": 6013,
+      "name": "WrongPhase",
+      "msg": "Wrong phase for this action"
+    },
+    {
+      "code": 6014,
+      "name": "WeightsHashAlreadySet",
+      "msg": "Weights hash already set for this lottery"
+    },
+    {
+      "code": 6015,
+      "name": "InvalidWeightsHash",
+      "msg": "Invalid weights hash (zero value)"
+    },
+    {
+      "code": 6016,
+      "name": "NotEndedYet",
+      "msg": "Entry period has not ended yet"
+    },
+    {
+      "code": 6017,
+      "name": "VrfNotReady",
+      "msg": "VRF is not ready yet"
+    },
+    {
+      "code": 6018,
+      "name": "VrfAlreadyCalled",
+      "msg": "VRF already called"
+    },
+    {
+      "code": 6019,
+      "name": "InsufficientVaultBalance",
+      "msg": "Insufficient vault balance"
+    },
+    {
+      "code": 6020,
+      "name": "InvalidVrfSeed",
+      "msg": "Invalid VRF seed (zero)"
+    },
+    {
+      "code": 6021,
+      "name": "DurationTooLong",
+      "msg": "Lottery duration is too long"
+    },
+    {
+      "code": 6022,
+      "name": "AlreadyPaused",
+      "msg": "Lottery is already paused"
+    },
+    {
+      "code": 6023,
+      "name": "NotPaused",
+      "msg": "Lottery is not paused"
+    },
+    {
+      "code": 6024,
+      "name": "NotInPurchasesPhase",
+      "msg": "Lottery is not in purchases phase"
+    },
+    {
+      "code": 6025,
+      "name": "InvalidVaultOwner",
+      "msg": "Vault must be owned by the System Program"
+    },
+    {
+      "code": 6026,
+      "name": "InvalidVaultData",
+      "msg": "Vault must have zero data"
+    },
+    {
+      "code": 6027,
+      "name": "RandomnessAccountMismatch",
+      "msg": "Randomness account does not match lottery state"
+    },
+    {
+      "code": 6028,
+      "name": "InvalidRandomnessAccountData",
+      "msg": "Failed to parse randomness account"
+    },
+    {
+      "code": 6029,
+      "name": "RandomnessNotResolved",
+      "msg": "Randomness is not resolved"
+    },
+    {
+      "code": 6030,
+      "name": "InvalidRandomnessAccountOwner",
+      "msg": "Randomness account owner is invalid"
+    },
+    {
+      "code": 6031,
+      "name": "RandomnessRequestMismatch",
+      "msg": "Randomness data does not match the bound request metadata"
+    },
+    {
+      "code": 6032,
+      "name": "RandomnessAlreadyResolved",
+      "msg": "Randomness has already been produced for this round"
+    },
+    {
+      "code": 6033,
+      "name": "InvalidSlotHashesSysvar",
+      "msg": "Recent slot hashes sysvar is missing or malformed"
+    },
+    {
+      "code": 6034,
+      "name": "SeedSlotNotFound",
+      "msg": "Seed slot is not present in the slot hashes sysvar"
+    },
+    {
+      "code": 6035,
+      "name": "SeedSlotTooOld",
+      "msg": "Seed slot is too far in the past"
+    },
+    {
+      "code": 6036,
+      "name": "InvalidVrfAlgorithmHash",
+      "msg": "Invalid VRF algorithm hash (zero value)"
+    }
+  ],
+  "types": [
+    {
+      "name": "Deposit",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "lottery",
+            "type": "pubkey"
+          },
+          {
+            "name": "user",
+            "type": "pubkey"
+          },
+          {
+            "name": "mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "ts",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "EmergencySeedUsed",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "lottery",
+            "type": "pubkey"
+          },
+          {
+            "name": "seed",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "requested_ts",
+            "docs": [
+              "When the round asked ORAO, so the silence before this is measurable."
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "ts",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Lottery",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "admin",
+            "type": "pubkey"
+          },
+          {
+            "name": "start_ts",
+            "type": "i64"
+          },
+          {
+            "name": "end_ts",
+            "type": "i64"
+          },
+          {
+            "name": "fee_bps",
+            "type": "u16"
+          },
+          {
+            "name": "wallet_fee",
+            "type": "pubkey"
+          },
+          {
+            "name": "wallet_keeper",
+            "type": "pubkey"
+          },
+          {
+            "name": "min_amount",
+            "type": "u64"
+          },
+          {
+            "name": "max_amount",
+            "type": "u64"
+          },
+          {
+            "name": "max_total",
+            "type": "u64"
+          },
+          {
+            "name": "status",
+            "type": {
+              "defined": {
+                "name": "LotteryStatus"
+              }
+            }
+          },
+          {
+            "name": "paused",
+            "type": "bool"
+          },
+          {
+            "name": "deposits_count",
+            "type": "u64"
+          },
+          {
+            "name": "total_deposited",
+            "type": "u128"
+          },
+          {
+            "name": "weights_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "vrf_requested_ts",
+            "docs": [
+              "When the randomness was asked for. The emergency path counts from here."
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "vrf_seed",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "vrf_called",
+            "type": "bool"
+          },
+          {
+            "name": "vrf_request",
+            "docs": [
+              "The ORAO request account this round is bound to. A PDA of `vrf_force`,",
+              "stored so the binding is readable without recomputing anything."
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "vrf_force",
+            "docs": [
+              "The request seed the program derived. Kept on chain so a verifier can",
+              "recompute it and confirm the round could not have shopped for another."
+            ],
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "vrf_seed_slot",
+            "docs": [
+              "The slot whose hash went into `vrf_force`. Without it the derivation",
+              "cannot be reproduced, so it is part of the proof, not bookkeeping."
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "vrf_algorithm_hash",
+            "docs": [
+              "sha256 of the canonical VRF used for this lottery. Set once in",
+              "initialize, immutable thereafter. Verified off-chain by users."
+            ],
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "LotteryInitialized",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "lottery",
+            "type": "pubkey"
+          },
+          {
+            "name": "admin",
+            "type": "pubkey"
+          },
+          {
+            "name": "start_ts",
+            "type": "i64"
+          },
+          {
+            "name": "end_ts",
+            "type": "i64"
+          },
+          {
+            "name": "min_amount",
+            "type": "u64"
+          },
+          {
+            "name": "max_amount",
+            "type": "u64"
+          },
+          {
+            "name": "max_total",
+            "type": "u64"
+          },
+          {
+            "name": "vrf_algorithm_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "LotteryStatus",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Open"
+          },
+          {
+            "name": "PendingVrf"
+          },
+          {
+            "name": "ReadyToDraw"
+          },
+          {
+            "name": "ProceedingPurchases"
+          },
+          {
+            "name": "Closed"
+          }
+        ]
+      }
+    },
+    {
+      "name": "NetworkConfiguration",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "treasury",
+            "type": "pubkey"
+          },
+          {
+            "name": "request_fee",
+            "type": "u64"
+          },
+          {
+            "name": "fulfillment_authorities",
+            "type": {
+              "vec": "pubkey"
+            }
+          },
+          {
+            "name": "token_fee_config",
+            "type": {
+              "option": {
+                "defined": {
+                  "name": "OraoTokenFeeConfig"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "NetworkState",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "config",
+            "type": {
+              "defined": {
+                "name": "NetworkConfiguration"
+              }
+            }
+          },
+          {
+            "name": "num_received",
+            "docs": [
+              "Total number of received requests."
+            ],
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "OraoTokenFeeConfig",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "mint",
+            "docs": [
+              "ORAO token mint address."
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "treasury",
+            "docs": [
+              "ORAO token treasury account."
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "fee",
+            "docs": [
+              "Fee in ORAO SPL token smallest units."
+            ],
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PauseStatusChanged",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "lottery",
+            "type": "pubkey"
+          },
+          {
+            "name": "paused",
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Phase2Started",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "lottery",
+            "type": "pubkey"
+          },
+          {
+            "name": "weights_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "randomness_account",
+            "docs": [
+              "The ORAO request account, a PDA of `force`."
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "force",
+            "docs": [
+              "The derived request seed. Published so the derivation can be rechecked",
+              "without reading the round account."
+            ],
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "seed_slot",
+            "docs": [
+              "The slot whose hash seeded `force`."
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "requested_ts",
+            "type": "i64"
+          },
+          {
+            "name": "requested_slot",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PhaseChanged",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "lottery",
+            "type": "pubkey"
+          },
+          {
+            "name": "status",
+            "type": {
+              "defined": {
+                "name": "LotteryStatus"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "PurchasesPhaseStarted",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "lottery",
+            "type": "pubkey"
+          },
+          {
+            "name": "fee_amount",
+            "type": "u64"
+          },
+          {
+            "name": "meme_amount",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "VrfFulfilled",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "lottery",
+            "type": "pubkey"
+          },
+          {
+            "name": "seed",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

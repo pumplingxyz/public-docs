@@ -1,0 +1,5 @@
+# Force LF line endings on every text file in this repo. The canonical
+# vrf.py and other artifacts whose sha256 we publish must hash to the
+# same value regardless of which OS clones the repo, so we cannot let
+# git's autocrlf behaviour rewrite line endings on checkout.
+* text=auto eol=lf
